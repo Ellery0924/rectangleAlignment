@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,7 +73,29 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const Rectangle_1 = __webpack_require__(1);
+function randomize(min, max) {
+    return parseInt(String(min + Math.random() * (max - min)), 10);
+}
+exports.randomize = randomize;
+function getRandomRects() {
+    return new Array(10).fill(1).map(() => ({
+        top: 0,
+        left: 0,
+        width: randomize(200, 400),
+        height: randomize(200, 400)
+    }));
+}
+exports.getRandomRects = getRandomRects;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const Rectangle_1 = __webpack_require__(2);
 class default_1 {
     constructor(rectList, cw, canvas) {
         this.orderedList = [];
@@ -235,15 +257,13 @@ exports.default = default_1;
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-function randomize(min, max) {
-    return parseInt(String(min + Math.random() * (max - min)), 10);
-}
+const utils_1 = __webpack_require__(0);
 class default_1 {
     constructor(args) {
         this.init(args);
@@ -255,7 +275,7 @@ class default_1 {
         this.height = height;
         this.right = left + width;
         this.bottom = top + height;
-        this.color = `rgb(${randomize(0, 255)},${randomize(0, 255)},${randomize(0, 255)})`;
+        this.color = `rgb(${utils_1.randomize(0, 255)},${utils_1.randomize(0, 255)},${utils_1.randomize(0, 255)})`;
     }
     moveTo({ top, left }) {
         this.init({ top, left, width: this.width, height: this.height });
@@ -282,28 +302,18 @@ exports.default = default_1;
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const Matrix_1 = __webpack_require__(0);
-function randomize(min, max) {
-    return min + Math.random() * (max - min);
-}
-function getRandomRects() {
-    return new Array(10).fill(1).map(() => ({
-        top: 0,
-        left: 0,
-        width: randomize(200, 400),
-        height: randomize(200, 400)
-    }));
-}
+const Matrix_1 = __webpack_require__(1);
+const utils_1 = __webpack_require__(0);
 function init() {
     const canvas = document.querySelector('#canvas');
     canvas.innerHTML = '';
-    const data = getRandomRects();
+    const data = utils_1.getRandomRects();
     const m = new Matrix_1.default(data, 1000, canvas);
     return m.align();
 }

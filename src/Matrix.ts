@@ -57,7 +57,7 @@ export default class {
         const rLeft: number = rect.left;
         // 生成一个新的gap，这个gap的top应该是这个rect移动以后的bottom，这个新gap的top和left很容易确定
         // 接下来计算它的宽度
-        const newGapInterface: GapInterface = {top: rBottom, createBy: rect, left: null, width: null};
+        const newGapInterface: GapInterface = { top: rBottom, createBy: rect, left: null, width: null };
 
         // 从矩形的右下角往右查找，看能否撞到另一个矩形
         // 可以一直延伸到容器右边界

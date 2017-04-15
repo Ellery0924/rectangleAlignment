@@ -1,5 +1,5 @@
-import {randomize} from './utils';
-import {RectOptInterface} from './interfaces';
+import { randomize } from './utils';
+import { RectOptInterface } from './interfaces';
 
 export default class {
     top: number;
@@ -14,7 +14,7 @@ export default class {
         this.init(args);
     }
 
-    init({top, left, width, height}: RectOptInterface): void {
+    init({ top, left, width, height }: RectOptInterface): void {
         this.top = top;
         this.left = left;
         this.width = width;
@@ -24,8 +24,8 @@ export default class {
         this.color = `rgb(${randomize(0, 255)},${randomize(0, 255)},${randomize(0, 255)})`;
     }
 
-    moveTo({top, left}: { top: number, left: number }): void {
-        this.init({top, left, width: this.width, height: this.height});
+    moveTo({ top, left }: { top: number, left: number }): void {
+        this.init({ top, left, width: this.width, height: this.height });
     }
 
     getDOMNode(): HTMLDivElement {
