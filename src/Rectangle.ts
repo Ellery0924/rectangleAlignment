@@ -1,7 +1,4 @@
-function randomize(min: number, max: number): number {
-    return parseInt(String(min + Math.random() * (max - min)), 10);
-}
-
+import {randomize} from './utils';
 import {RectOptInterface} from './interfaces';
 
 export default class {

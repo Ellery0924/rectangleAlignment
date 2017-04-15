@@ -1,5 +1,5 @@
 import Rectangle from './Rectangle';
-import {RectOptInterface} from './interfaces';
+import { RectOptInterface } from './interfaces';
 
 interface GapInterface {
     top: number;

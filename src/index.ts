@@ -1,17 +1,5 @@
 import Matrix from './Matrix';
-
-function randomize(min, max) {
-    return min + Math.random() * (max - min);
-}
-
-function getRandomRects() {
-    return new Array(10).fill(1).map(() => ({
-        top: 0,
-        left: 0,
-        width: randomize(200, 400),
-        height: randomize(200, 400)
-    }));
-}
+import { randomize, getRandomRects } from './utils';
 
 function init(): any {
     const canvas = <HTMLScriptElement>document.querySelector('#canvas');
