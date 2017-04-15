@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "DOM",
+      "ES2017"
+    ],
+    "target": "ES2017"
+  }
+}
