@@ -171,12 +171,11 @@ export default class {
 
     align(): IterableIterator<any> {
         let step = function*() {
-            let counter = 10;
-            while (this.notOrderedList.length > 0 && counter > 0) {
+            while (this.notOrderedList.length > 0) {
                 // gaps按bottom升序排列
                 for (let i = 0; i < this.gaps.length; i++) {
-                    const gap = this.gaps[i];
-                    const mostMatchedRect = this.findMostMatchedRect(gap);
+                    const gap: GapInterface = this.gaps[i];
+                    const mostMatchedRect: Rectangle = this.findMostMatchedRect(gap);
                     if (mostMatchedRect) {
                         this.fillGapInterface(mostMatchedRect, gap);
                         this.drawOrderedRect();
