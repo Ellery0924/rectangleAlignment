@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -110,7 +110,7 @@ class default_1 {
         };
         this.gaps = [gap];
     }
-    fillGapInterface(rect, gap) {
+    fillGap(rect, gap) {
         rect.moveTo(gap);
         this.orderedList = this.orderedList.concat(rect).sort((a, b) => {
             if (a.left !== b.left) {
@@ -155,9 +155,9 @@ class default_1 {
         const newGapInterfaceRight = rectOnTheNearestRight ? rectOnTheNearestRight.left : this.cw;
         newGapInterface.width = newGapInterfaceRight - newGapInterface.left;
         this.gaps.push(newGapInterface);
-        this.refreshGapInterfaces();
+        this.refreshGap();
     }
-    refreshGapInterfaces() {
+    refreshGap() {
         const ret = [];
         for (let i = 0; i < this.gaps.length; i++) {
             const gap = this.gaps[i];
@@ -212,7 +212,7 @@ class default_1 {
             this.canvas.appendChild(rectDOM);
         });
     }
-    drawGapInterfaces() {
+    drawGap() {
         const existsGapInterfaceDOMS = document.querySelectorAll('.gap');
         for (let i = 0; i < existsGapInterfaceDOMS.length; i++) {
             const dom = existsGapInterfaceDOMS[i];
@@ -235,16 +235,15 @@ class default_1 {
     }
     align() {
         let step = function* () {
-            let counter = 10;
-            while (this.notOrderedList.length > 0 && counter > 0) {
+            while (this.notOrderedList.length > 0) {
                 // gaps按bottom升序排列
                 for (let i = 0; i < this.gaps.length; i++) {
                     const gap = this.gaps[i];
                     const mostMatchedRect = this.findMostMatchedRect(gap);
                     if (mostMatchedRect) {
-                        this.fillGapInterface(mostMatchedRect, gap);
+                        this.fillGap(mostMatchedRect, gap);
                         this.drawOrderedRect();
-                        yield this.drawGapInterfaces();
+                        yield this.drawGap();
                         break;
                     }
                 }

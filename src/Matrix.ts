@@ -31,7 +31,7 @@ export default class {
         this.gaps = [gap];
     }
 
-    fillGapInterface(rect: Rectangle, gap: GapInterface): void {
+    fillGap(rect: Rectangle, gap: GapInterface): void {
         rect.moveTo(gap);
         this.orderedList = this.orderedList.concat(rect).sort((a: Rectangle, b: Rectangle) => {
             if (a.left !== b.left) {
@@ -81,10 +81,10 @@ export default class {
         newGapInterface.width = newGapInterfaceRight - newGapInterface.left;
 
         this.gaps.push(newGapInterface);
-        this.refreshGapInterfaces();
+        this.refreshGap();
     }
 
-    refreshGapInterfaces(): void {
+    refreshGap(): void {
         const ret: Array<GapInterface> = [];
         for (let i = 0; i < this.gaps.length; i++) {
             const gap: GapInterface = this.gaps[i];
@@ -145,7 +145,7 @@ export default class {
             });
     }
 
-    drawGapInterfaces(): void {
+    drawGap(): void {
         const existsGapInterfaceDOMS: NodeListOf<Element> = document.querySelectorAll('.gap');
 
         for (let i = 0; i < existsGapInterfaceDOMS.length; i++) {
@@ -177,9 +177,9 @@ export default class {
                     const gap: GapInterface = this.gaps[i];
                     const mostMatchedRect: Rectangle = this.findMostMatchedRect(gap);
                     if (mostMatchedRect) {
-                        this.fillGapInterface(mostMatchedRect, gap);
+                        this.fillGap(mostMatchedRect, gap);
                         this.drawOrderedRect();
-                        yield this.drawGapInterfaces();
+                        yield this.drawGap();
                         break;
                     }
                 }
