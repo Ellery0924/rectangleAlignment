@@ -8,7 +8,7 @@ export function getRandomRects(): Array<RectOptInterface> {
     return new Array(10).fill(1).map(() => ({
         top: 0,
         left: 0,
-        width: randomize(200, 400),
-        height: randomize(200, 400)
+        width: randomize(300, 400),
+        height: randomize(300, 400)
     }));
 }

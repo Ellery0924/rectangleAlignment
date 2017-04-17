@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
+/******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		}
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -81,8 +81,8 @@ function getRandomRects() {
     return new Array(10).fill(1).map(() => ({
         top: 0,
         left: 0,
-        width: randomize(200, 400),
-        height: randomize(200, 400)
+        width: randomize(300, 400),
+        height: randomize(300, 400)
     }));
 }
 exports.getRandomRects = getRandomRects;
@@ -136,7 +136,7 @@ class default_1 {
         const rLeft = rect.left;
         // 生成一个新的gap，这个gap的top应该是这个rect移动以后的bottom，这个新gap的top和left很容易确定
         // 接下来计算它的宽度
-        const newGapInterface = { top: rBottom, createBy: rect, left: null, width: null };
+        const newGap = { top: rBottom, createBy: rect, left: null, width: null };
         // 从矩形的右下角往右查找，看能否撞到另一个矩形
         // 可以一直延伸到容器右边界
         // 左边界同理
@@ -151,10 +151,10 @@ class default_1 {
         if (rectsOnTheLeftSide.length) {
             rectOnTheNearestLeft = rectsOnTheLeftSide.sort((a, b) => b.left - a.left)[0];
         }
-        newGapInterface.left = rectOnTheNearestLeft ? rectOnTheNearestLeft.right : 0;
-        const newGapInterfaceRight = rectOnTheNearestRight ? rectOnTheNearestRight.left : this.cw;
-        newGapInterface.width = newGapInterfaceRight - newGapInterface.left;
-        this.gaps.push(newGapInterface);
+        newGap.left = rectOnTheNearestLeft ? rectOnTheNearestLeft.right : 0;
+        const newGapRight = rectOnTheNearestRight ? rectOnTheNearestRight.left : this.cw;
+        newGap.width = newGapRight - newGap.left;
+        this.gaps.push(newGap);
         this.refreshGap();
     }
     refreshGap() {
@@ -163,14 +163,14 @@ class default_1 {
             const gap = this.gaps[i];
             const barrierRect = this.orderedList.find(or => or.bottom > gap.top && or.left >= gap.left);
             if (barrierRect) {
-                const origGapInterfaceRight = gap.left + gap.width;
+                const origGapRight = gap.left + gap.width;
                 const createBy = gap.createBy;
                 if (createBy) {
                     if (createBy.left > barrierRect.left) {
                         ret.push({
                             top: gap.top,
                             left: barrierRect.right,
-                            width: origGapInterfaceRight - barrierRect.right,
+                            width: origGapRight - barrierRect.right,
                             createBy: createBy
                         });
                     }
@@ -213,9 +213,9 @@ class default_1 {
         });
     }
     drawGap() {
-        const existsGapInterfaceDOMS = document.querySelectorAll('.gap');
-        for (let i = 0; i < existsGapInterfaceDOMS.length; i++) {
-            const dom = existsGapInterfaceDOMS[i];
+        const existsGapDOMs = document.querySelectorAll('.gap');
+        for (let i = 0; i < existsGapDOMs.length; i++) {
+            const dom = existsGapDOMs[i];
             dom.parentNode.removeChild(dom);
         }
         this.gaps.forEach(gap => {
@@ -313,7 +313,7 @@ function init() {
     const canvas = document.querySelector('#canvas');
     canvas.innerHTML = '';
     const data = utils_1.getRandomRects();
-    const m = new Matrix_1.default(data, 1000, canvas);
+    const m = new Matrix_1.default(data, 1200, canvas);
     return m.align();
 }
 let ctrl = init();

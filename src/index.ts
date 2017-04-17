@@ -5,7 +5,7 @@ function init(): any {
     const canvas = <HTMLScriptElement>document.querySelector('#canvas');
     canvas.innerHTML = '';
     const data = getRandomRects();
-    const m = new Matrix(data, 1000, canvas);
+    const m = new Matrix(data, 1200, canvas);
     return m.align();
 }
 

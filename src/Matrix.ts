@@ -57,7 +57,7 @@ export default class {
         const rLeft: number = rect.left;
         // 生成一个新的gap，这个gap的top应该是这个rect移动以后的bottom，这个新gap的top和left很容易确定
         // 接下来计算它的宽度
-        const newGapInterface: GapInterface = { top: rBottom, createBy: rect, left: null, width: null };
+        const newGap: GapInterface = { top: rBottom, createBy: rect, left: null, width: null };
 
         // 从矩形的右下角往右查找，看能否撞到另一个矩形
         // 可以一直延伸到容器右边界
@@ -76,11 +76,11 @@ export default class {
             rectOnTheNearestLeft = rectsOnTheLeftSide.sort((a, b) => b.left - a.left)[0];
         }
 
-        newGapInterface.left = rectOnTheNearestLeft ? rectOnTheNearestLeft.right : 0;
-        const newGapInterfaceRight: number = rectOnTheNearestRight ? rectOnTheNearestRight.left : this.cw;
-        newGapInterface.width = newGapInterfaceRight - newGapInterface.left;
+        newGap.left = rectOnTheNearestLeft ? rectOnTheNearestLeft.right : 0;
+        const newGapRight: number = rectOnTheNearestRight ? rectOnTheNearestRight.left : this.cw;
+        newGap.width = newGapRight - newGap.left;
 
-        this.gaps.push(newGapInterface);
+        this.gaps.push(newGap);
         this.refreshGap();
     }
 
@@ -92,14 +92,14 @@ export default class {
                 or.bottom > gap.top && or.left >= gap.left
             );
             if (barrierRect) {
-                const origGapInterfaceRight: number = gap.left + gap.width;
+                const origGapRight: number = gap.left + gap.width;
                 const createBy: Rectangle = gap.createBy;
                 if (createBy) {
                     if (createBy.left > barrierRect.left) {
                         ret.push({
                             top: gap.top,
                             left: barrierRect.right,
-                            width: origGapInterfaceRight - barrierRect.right,
+                            width: origGapRight - barrierRect.right,
                             createBy: createBy
                         });
                     } else {
@@ -146,10 +146,10 @@ export default class {
     }
 
     drawGap(): void {
-        const existsGapInterfaceDOMS: NodeListOf<Element> = document.querySelectorAll('.gap');
+        const existsGapDOMs: NodeListOf<Element> = document.querySelectorAll('.gap');
 
-        for (let i = 0; i < existsGapInterfaceDOMS.length; i++) {
-            const dom: Element = existsGapInterfaceDOMS[i];
+        for (let i = 0; i < existsGapDOMs.length; i++) {
+            const dom: Element = existsGapDOMs[i];
             dom.parentNode.removeChild(dom);
         }
 
