@@ -3,7 +3,7 @@
   "publishConfig": {
     "registry": "http://registry.npm.alibaba-inc.com"
   },
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "./dist/module.js",
   "devDependencies": {

@@ -14,7 +14,7 @@ export default class {
         this.init(args);
     }
 
-    init({ top, left, width, height }: RectOptInterface): void {
+    init({ top = 0, left = 0, width, height }): void {
         this.top = top;
         this.left = left;
         this.width = width;

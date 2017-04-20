@@ -88,8 +88,6 @@ function randomize(min, max) {
 }
 function getRandomRects() {
     return new Array(10).fill(1).map(() => ({
-        top: 0,
-        left: 0,
         width: randomize(300, 400),
         height: randomize(300, 400)
     }));
@@ -275,7 +273,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     constructor(args) {
         this.init(args);
     }
-    init({ top, left, width, height }) {
+    init({ top = 0, left = 0, width, height }) {
         this.top = top;
         this.left = left;
         this.width = width;
