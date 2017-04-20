@@ -169,7 +169,7 @@ export default class {
         });
     }
 
-    align(): IterableIterator<any> {
+    align(visualize: boolean = false): IterableIterator<any> {
         let step = function*() {
             while (this.notOrderedList.length > 0) {
                 // gaps按bottom升序排列
@@ -178,8 +178,10 @@ export default class {
                     const mostMatchedRect: Rectangle = this.findMostMatchedRect(gap);
                     if (mostMatchedRect) {
                         this.fillGap(mostMatchedRect, gap);
-                        this.drawOrderedRect();
-                        yield this.drawGap();
+                        if (visualize) {
+                            this.drawOrderedRect();
+                            yield this.drawGap();
+                        }
                         break;
                     }
                 }

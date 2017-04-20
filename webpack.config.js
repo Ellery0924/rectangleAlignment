@@ -1,10 +1,10 @@
 var path = require('path');
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: { demo: './demo/index.ts', module: './src/Matrix.ts' },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
     resolve: {
         extensions: ['.ts']

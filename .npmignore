@@ -1,0 +1,7 @@
+node_modules/
+demo/
+dist/demo.js
+src/
+tsconfig.json
+.gitignore
+webpack.config.js

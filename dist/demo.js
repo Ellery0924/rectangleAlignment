@@ -233,7 +233,7 @@ class default_1 {
             this.canvas.appendChild(gapDOM);
         });
     }
-    align() {
+    align(visualize = false) {
         let step = function* () {
             while (this.notOrderedList.length > 0) {
                 // gaps按bottom升序排列
@@ -242,8 +242,10 @@ class default_1 {
                     const mostMatchedRect = this.findMostMatchedRect(gap);
                     if (mostMatchedRect) {
                         this.fillGap(mostMatchedRect, gap);
-                        this.drawOrderedRect();
-                        yield this.drawGap();
+                        if (visualize) {
+                            this.drawOrderedRect();
+                            yield this.drawGap();
+                        }
                         break;
                     }
                 }
@@ -314,7 +316,7 @@ function init() {
     canvas.innerHTML = '';
     const data = utils_1.getRandomRects();
     const m = new Matrix_1.default(data, 1200, canvas);
-    return m.align();
+    return m.align(true);
 }
 let ctrl = init();
 document.querySelector('#next').addEventListener('click', () => {
