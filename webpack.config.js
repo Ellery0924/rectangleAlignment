@@ -4,7 +4,8 @@ module.exports = {
     entry: { demo: './demo/index.ts', module: './src/Matrix.ts' },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: '[name].js'
+        filename: '[name].js',
+        libraryTarget: 'umd'
     },
     resolve: {
         extensions: ['.ts']

@@ -1,4 +1,14 @@
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -68,15 +78,14 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
+/* harmony export (immutable) */ __webpack_exports__["a"] = randomize;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getRandomRects;
 function randomize(min, max) {
     return parseInt(String(min + Math.random() * (max - min)), 10);
 }
-exports.randomize = randomize;
 function getRandomRects() {
     return new Array(10).fill(1).map(() => ({
         top: 0,
@@ -85,21 +94,20 @@ function getRandomRects() {
         height: randomize(300, 400)
     }));
 }
-exports.getRandomRects = getRandomRects;
 
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Rectangle__ = __webpack_require__(2);
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const Rectangle_1 = __webpack_require__(2);
-class default_1 {
+/* harmony default export */ __webpack_exports__["default"] = (class {
     constructor(rectList, cw, canvas) {
         this.orderedList = [];
-        this.notOrderedList = rectList.map(ropt => new Rectangle_1.default(ropt));
+        this.notOrderedList = rectList.map(ropt => new __WEBPACK_IMPORTED_MODULE_0__Rectangle__["a" /* default */](ropt));
         this.cw = cw;
         this.canvas = canvas;
         const gap = {
@@ -253,19 +261,17 @@ class default_1 {
         };
         return step.bind(this)();
     }
-}
-exports.default = default_1;
+});
 
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = __webpack_require__(0);
-class default_1 {
+/* harmony default export */ __webpack_exports__["a"] = (class {
     constructor(args) {
         this.init(args);
     }
@@ -276,7 +282,7 @@ class default_1 {
         this.height = height;
         this.right = left + width;
         this.bottom = top + height;
-        this.color = `rgb(${utils_1.randomize(0, 255)},${utils_1.randomize(0, 255)},${utils_1.randomize(0, 255)})`;
+        this.color = `rgb(${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* randomize */])(0, 255)},${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* randomize */])(0, 255)},${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* randomize */])(0, 255)})`;
     }
     moveTo({ top, left }) {
         this.init({ top, left, width: this.width, height: this.height });
@@ -298,24 +304,24 @@ class default_1 {
         dom.setAttribute('style', style);
         return dom;
     }
-}
-exports.default = default_1;
+});
 
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_Matrix__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_utils__ = __webpack_require__(0);
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const Matrix_1 = __webpack_require__(1);
-const utils_1 = __webpack_require__(0);
+
 function init() {
     const canvas = document.querySelector('#canvas');
     canvas.innerHTML = '';
-    const data = utils_1.getRandomRects();
-    const m = new Matrix_1.default(data, 1200, canvas);
+    const data = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__src_utils__["b" /* getRandomRects */])();
+    const m = new __WEBPACK_IMPORTED_MODULE_0__src_Matrix__["default"](data, 1200, canvas);
     return m.align(true);
 }
 let ctrl = init();
@@ -329,3 +335,4 @@ document.querySelector('#refresh').addEventListener('click', () => {
 
 /***/ })
 /******/ ]);
+});

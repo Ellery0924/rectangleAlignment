@@ -3,9 +3,9 @@
   "publishConfig": {
     "registry": "http://registry.npm.alibaba-inc.com"
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
-  "main": "dist/Matrix.js",
+  "main": "./dist/module.js",
   "devDependencies": {
     "ts-loader": "^2.0.3",
     "typescript": "^2.2.2"
