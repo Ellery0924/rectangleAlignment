@@ -1,5 +1,4 @@
 import { randomize } from './utils';
-import { RectOptInterface } from './interfaces';
 
 export default class Rectangle {
     top: number;

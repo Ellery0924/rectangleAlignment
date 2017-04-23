@@ -1,5 +1,4 @@
 import Rectangle from './Rectangle';
-import { RectOptInterface } from './interfaces';
 
 interface GapInterface {
     top: number;
@@ -15,7 +14,7 @@ export default class Alignment {
     canvas: HTMLScriptElement;
     gaps: Array<GapInterface>;
 
-    constructor(rectList: Array<RectOptInterface>, cw: number, canvas: HTMLScriptElement) {
+    constructor(rectList: Array<{ width: number, height: number }>, cw: number, canvas: HTMLScriptElement) {
         this.orderedList = [];
         this.notOrderedList = rectList.map(ropt => new Rectangle(ropt));
         this.cw = cw;

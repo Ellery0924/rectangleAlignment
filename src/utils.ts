@@ -1,5 +1,3 @@
-import { RectOptInterface } from './interfaces';
-
 export function randomize(min: number, max: number): number {
     return parseInt(String(min + Math.random() * (max - min)), 10);
 }
