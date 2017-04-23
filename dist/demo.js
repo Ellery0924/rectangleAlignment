@@ -327,7 +327,7 @@ function init() {
     console.log(data);
     var m = new Alignment_1.default(data, 1200, canvas);
     m.align();
-    console.log(m.getOrderedList());
+    // console.log(m.getOrderedList())
     return m.align();
 }
 var ctrl = init();
