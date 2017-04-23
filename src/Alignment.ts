@@ -135,39 +135,6 @@ export default class Alignment {
         return mostMatched;
     }
 
-    drawOrderedRect(): void {
-        this.orderedList
-            .sort((a, b) => a.bottom - b.bottom)
-            .forEach(or => {
-                const rectDOM = or.getDOMNode();
-                this.canvas.appendChild(rectDOM);
-            });
-    }
-
-    drawGap(): void {
-        const existsGapDOMs: NodeListOf<Element> = document.querySelectorAll('.gap');
-
-        for (let i = 0; i < existsGapDOMs.length; i++) {
-            const dom: Element = existsGapDOMs[i];
-            dom.parentNode.removeChild(dom);
-        }
-
-        this.gaps.forEach(gap => {
-            const gapDOM: HTMLDivElement = document.createElement('div');
-            gapDOM.className = 'gap';
-            const style = `
-                height:1px;
-                position:absolute;
-                background:red;
-                top:${gap.top}px;
-                left:${gap.left}px;
-                width:${gap.width}px
-            `;
-            gapDOM.setAttribute('style', style);
-            this.canvas.appendChild(gapDOM);
-        });
-    }
-
     align(): void {
         while (this.notOrderedList.length > 0) {
             // gaps按bottom升序排列

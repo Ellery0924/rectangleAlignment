@@ -29,25 +29,6 @@ export default class Rectangle {
         this.init({ top, left, width: this.width, height: this.height, other: this.other });
     }
 
-    getDOMNode(): HTMLDivElement {
-        const dom: HTMLDivElement = document.createElement('div');
-        const pos: string = `
-            top:${this.top}px;
-            left:${this.left}px;
-            width:${this.width}px;
-            height:${this.height}px;
-            other:${this.other}
-        `;
-        const style: string = `
-            position:absolute;
-            background-color:${this.color};
-            ${pos}
-        `;
-        dom.innerHTML = pos;
-        dom.setAttribute('style', style);
-        return dom;
-    }
-
     serialize() {
         return {
             x: this.left,

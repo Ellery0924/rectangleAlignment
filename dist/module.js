@@ -219,30 +219,6 @@ var Alignment = (function () {
         }
         return mostMatched;
     };
-    Alignment.prototype.drawOrderedRect = function () {
-        var _this = this;
-        this.orderedList
-            .sort(function (a, b) { return a.bottom - b.bottom; })
-            .forEach(function (or) {
-            var rectDOM = or.getDOMNode();
-            _this.canvas.appendChild(rectDOM);
-        });
-    };
-    Alignment.prototype.drawGap = function () {
-        var _this = this;
-        var existsGapDOMs = document.querySelectorAll('.gap');
-        for (var i = 0; i < existsGapDOMs.length; i++) {
-            var dom = existsGapDOMs[i];
-            dom.parentNode.removeChild(dom);
-        }
-        this.gaps.forEach(function (gap) {
-            var gapDOM = document.createElement('div');
-            gapDOM.className = 'gap';
-            var style = "\n                height:1px;\n                position:absolute;\n                background:red;\n                top:" + gap.top + "px;\n                left:" + gap.left + "px;\n                width:" + gap.width + "px\n            ";
-            gapDOM.setAttribute('style', style);
-            _this.canvas.appendChild(gapDOM);
-        });
-    };
     Alignment.prototype.align = function () {
         while (this.notOrderedList.length > 0) {
             // gaps按bottom升序排列
@@ -290,14 +266,6 @@ var Rectangle = (function () {
     Rectangle.prototype.moveTo = function (_a) {
         var top = _a.top, left = _a.left;
         this.init({ top: top, left: left, width: this.width, height: this.height, other: this.other });
-    };
-    Rectangle.prototype.getDOMNode = function () {
-        var dom = document.createElement('div');
-        var pos = "\n            top:" + this.top + "px;\n            left:" + this.left + "px;\n            width:" + this.width + "px;\n            height:" + this.height + "px;\n            other:" + this.other + "\n        ";
-        var style = "\n            position:absolute;\n            background-color:" + this.color + ";\n            " + pos + "\n        ";
-        dom.innerHTML = pos;
-        dom.setAttribute('style', style);
-        return dom;
     };
     Rectangle.prototype.serialize = function () {
         return {

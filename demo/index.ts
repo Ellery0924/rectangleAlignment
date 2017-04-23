@@ -8,15 +8,10 @@ function init(): any {
     console.log(data);
     const m = new Alignment(data, 1200, canvas);
     m.align();
-    // console.log(m.getOrderedList())
-    return m.align();
+    console.log(m.getOrderedList());
 }
 
 let ctrl = init();
-
-document.querySelector('#next').addEventListener('click', () => {
-    ctrl.next();
-});
 
 document.querySelector('#refresh').addEventListener('click', () => {
     ctrl = init();
