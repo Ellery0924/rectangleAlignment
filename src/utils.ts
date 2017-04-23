@@ -5,8 +5,9 @@ export function randomize(min: number, max: number): number {
 }
 
 export function getRandomRects() {
-    return new Array(10).fill(1).map(() => ({
+    return new Array(10).fill(1).map((_, i) => ({
         width: randomize(300, 400),
-        height: randomize(300, 400)
+        height: randomize(300, 400),
+        other: i
     }));
 }

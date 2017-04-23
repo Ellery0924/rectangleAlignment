@@ -5,8 +5,11 @@ function init(): any {
     const canvas = <HTMLScriptElement>document.querySelector('#canvas');
     canvas.innerHTML = '';
     const data = getRandomRects();
+    console.log(data);
     const m = new Alignment(data, 1200, canvas);
-    return m.align(true);
+    m.align();
+    // console.log(m.getOrderedList())
+    return m.align();
 }
 
 let ctrl = init();

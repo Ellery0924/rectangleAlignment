@@ -8,7 +8,7 @@ interface GapInterface {
     createBy: Rectangle
 }
 
-export default class {
+export default class Alignment {
     orderedList: Array<Rectangle>;
     notOrderedList: Array<Rectangle>;
     cw: number;
@@ -169,25 +169,21 @@ export default class {
         });
     }
 
-    align(visualize: boolean = false): IterableIterator<any> {
-        let step = function*() {
-            while (this.notOrderedList.length > 0) {
-                // gaps按bottom升序排列
-                for (let i = 0; i < this.gaps.length; i++) {
-                    const gap: GapInterface = this.gaps[i];
-                    const mostMatchedRect: Rectangle = this.findMostMatchedRect(gap);
-                    if (mostMatchedRect) {
-                        this.fillGap(mostMatchedRect, gap);
-                        if (visualize) {
-                            this.drawOrderedRect();
-                            yield this.drawGap();
-                        }
-                        break;
-                    }
+    align(): void {
+        while (this.notOrderedList.length > 0) {
+            // gaps按bottom升序排列
+            for (let i = 0; i < this.gaps.length; i++) {
+                const gap: GapInterface = this.gaps[i];
+                const mostMatchedRect: Rectangle = this.findMostMatchedRect(gap);
+                if (mostMatchedRect) {
+                    this.fillGap(mostMatchedRect, gap);
+                    break;
                 }
             }
-        };
+        }
+    }
 
-        return step.bind(this)();
+    getOrderedList(): Array<object> {
+        return this.orderedList.map(rectangle => rectangle.serialize());
     }
 }

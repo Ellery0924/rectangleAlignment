@@ -4,6 +4,6 @@
       "DOM",
       "ES2017"
     ],
-    "target": "ES6"
+    "target": "ES5"
   }
 }

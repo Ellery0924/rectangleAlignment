@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-    entry: { demo: './demo/index.ts', module: './src/Matrix.ts' },
+    entry: { demo: './demo/index.ts', module: './src/Alignment.ts' },
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: '[name].js',

@@ -78,37 +78,40 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = randomize;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getRandomRects;
+
+Object.defineProperty(exports, "__esModule", { value: true });
 function randomize(min, max) {
     return parseInt(String(min + Math.random() * (max - min)), 10);
 }
+exports.randomize = randomize;
 function getRandomRects() {
-    return new Array(10).fill(1).map(() => ({
+    return new Array(10).fill(1).map(function (_, i) { return ({
         width: randomize(300, 400),
-        height: randomize(300, 400)
-    }));
+        height: randomize(300, 400),
+        other: i
+    }); });
 }
+exports.getRandomRects = getRandomRects;
 
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Rectangle__ = __webpack_require__(2);
 
-/* harmony default export */ __webpack_exports__["default"] = (class {
-    constructor(rectList, cw, canvas) {
+Object.defineProperty(exports, "__esModule", { value: true });
+var Rectangle_1 = __webpack_require__(2);
+var Alignment = (function () {
+    function Alignment(rectList, cw, canvas) {
         this.orderedList = [];
-        this.notOrderedList = rectList.map(ropt => new __WEBPACK_IMPORTED_MODULE_0__Rectangle__["a" /* default */](ropt));
+        this.notOrderedList = rectList.map(function (ropt) { return new Rectangle_1.default(ropt); });
         this.cw = cw;
         this.canvas = canvas;
-        const gap = {
+        var gap = {
             top: 0,
             left: 0,
             width: cw,
@@ -116,9 +119,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
         this.gaps = [gap];
     }
-    fillGap(rect, gap) {
+    Alignment.prototype.fillGap = function (rect, gap) {
         rect.moveTo(gap);
-        this.orderedList = this.orderedList.concat(rect).sort((a, b) => {
+        this.orderedList = this.orderedList.concat(rect).sort(function (a, b) {
             if (a.left !== b.left) {
                 return a.left - b.left;
             }
@@ -126,51 +129,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return a.bottom - b.bottom;
             }
         });
-        this.notOrderedList = this.notOrderedList.filter(r => r !== rect);
+        this.notOrderedList = this.notOrderedList.filter(function (r) { return r !== rect; });
         // 首先调整rect填进去的这个gap
         // 如果gap收缩到宽度0，说明已经被填满了，可以移除掉这个gap
         // gap可能会变成一个有底的洞，但是这并不会影响之后的填充
         if (gap.width - rect.width === 0) {
-            this.gaps = this.gaps.filter(g => g !== gap);
+            this.gaps = this.gaps.filter(function (g) { return g !== gap; });
         }
         else {
             gap.width = gap.width - rect.width;
             gap.left = gap.left + rect.width;
         }
-        const rBottom = rect.bottom;
-        const rRight = rect.right;
-        const rLeft = rect.left;
+        var rBottom = rect.bottom;
+        var rRight = rect.right;
+        var rLeft = rect.left;
         // 生成一个新的gap，这个gap的top应该是这个rect移动以后的bottom，这个新gap的top和left很容易确定
         // 接下来计算它的宽度
-        const newGap = { top: rBottom, createBy: rect, left: null, width: null };
+        var newGap = { top: rBottom, createBy: rect, left: null, width: null };
         // 从矩形的右下角往右查找，看能否撞到另一个矩形
         // 可以一直延伸到容器右边界
         // 左边界同理
         // 这样这个新的gap的尺寸就确定了
-        const rectsOnTheRightSide = this.orderedList.filter(or => or.left >= rRight && or.bottom > rBottom);
-        const rectsOnTheLeftSide = this.orderedList.filter(or => or.right <= rLeft && or.bottom > rBottom);
-        let rectOnTheNearestRight;
+        var rectsOnTheRightSide = this.orderedList.filter(function (or) { return or.left >= rRight && or.bottom > rBottom; });
+        var rectsOnTheLeftSide = this.orderedList.filter(function (or) { return or.right <= rLeft && or.bottom > rBottom; });
+        var rectOnTheNearestRight;
         if (rectsOnTheRightSide.length) {
-            rectOnTheNearestRight = rectsOnTheRightSide.sort((a, b) => a.left - b.left)[0];
+            rectOnTheNearestRight = rectsOnTheRightSide.sort(function (a, b) { return a.left - b.left; })[0];
         }
-        let rectOnTheNearestLeft;
+        var rectOnTheNearestLeft;
         if (rectsOnTheLeftSide.length) {
-            rectOnTheNearestLeft = rectsOnTheLeftSide.sort((a, b) => b.left - a.left)[0];
+            rectOnTheNearestLeft = rectsOnTheLeftSide.sort(function (a, b) { return b.left - a.left; })[0];
         }
         newGap.left = rectOnTheNearestLeft ? rectOnTheNearestLeft.right : 0;
-        const newGapRight = rectOnTheNearestRight ? rectOnTheNearestRight.left : this.cw;
+        var newGapRight = rectOnTheNearestRight ? rectOnTheNearestRight.left : this.cw;
         newGap.width = newGapRight - newGap.left;
         this.gaps.push(newGap);
         this.refreshGap();
-    }
-    refreshGap() {
-        const ret = [];
-        for (let i = 0; i < this.gaps.length; i++) {
-            const gap = this.gaps[i];
-            const barrierRect = this.orderedList.find(or => or.bottom > gap.top && or.left >= gap.left);
+    };
+    Alignment.prototype.refreshGap = function () {
+        var ret = [];
+        var _loop_1 = function (i) {
+            var gap = this_1.gaps[i];
+            var barrierRect = this_1.orderedList.find(function (or) {
+                return or.bottom > gap.top && or.left >= gap.left;
+            });
             if (barrierRect) {
-                const origGapRight = gap.left + gap.width;
-                const createBy = gap.createBy;
+                var origGapRight = gap.left + gap.width;
+                var createBy = gap.createBy;
                 if (createBy) {
                     if (createBy.left > barrierRect.left) {
                         ret.push({
@@ -193,116 +198,117 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             else {
                 ret.push(gap);
             }
+        };
+        var this_1 = this;
+        for (var i = 0; i < this.gaps.length; i++) {
+            _loop_1(i);
         }
-        this.gaps = ret.sort((a, b) => a.top - b.top);
-    }
-    findMostMatchedRect(gap) {
-        const gw = gap.width;
-        let sub = gw;
-        let mostMatched = null;
-        for (let i = 0; i < this.notOrderedList.length; i++) {
-            const notOrderedRect = this.notOrderedList[i];
-            const rectWidth = notOrderedRect.width;
+        this.gaps = ret.sort(function (a, b) { return a.top - b.top; });
+    };
+    Alignment.prototype.findMostMatchedRect = function (gap) {
+        var gw = gap.width;
+        var sub = gw;
+        var mostMatched = null;
+        for (var i = 0; i < this.notOrderedList.length; i++) {
+            var notOrderedRect = this.notOrderedList[i];
+            var rectWidth = notOrderedRect.width;
             if (gw >= rectWidth && sub > gw - rectWidth) {
                 sub = gw - rectWidth;
                 mostMatched = notOrderedRect;
             }
         }
         return mostMatched;
-    }
-    drawOrderedRect() {
+    };
+    Alignment.prototype.drawOrderedRect = function () {
+        var _this = this;
         this.orderedList
-            .sort((a, b) => a.bottom - b.bottom)
-            .forEach(or => {
-            const rectDOM = or.getDOMNode();
-            this.canvas.appendChild(rectDOM);
+            .sort(function (a, b) { return a.bottom - b.bottom; })
+            .forEach(function (or) {
+            var rectDOM = or.getDOMNode();
+            _this.canvas.appendChild(rectDOM);
         });
-    }
-    drawGap() {
-        const existsGapDOMs = document.querySelectorAll('.gap');
-        for (let i = 0; i < existsGapDOMs.length; i++) {
-            const dom = existsGapDOMs[i];
+    };
+    Alignment.prototype.drawGap = function () {
+        var _this = this;
+        var existsGapDOMs = document.querySelectorAll('.gap');
+        for (var i = 0; i < existsGapDOMs.length; i++) {
+            var dom = existsGapDOMs[i];
             dom.parentNode.removeChild(dom);
         }
-        this.gaps.forEach(gap => {
-            const gapDOM = document.createElement('div');
+        this.gaps.forEach(function (gap) {
+            var gapDOM = document.createElement('div');
             gapDOM.className = 'gap';
-            const style = `
-                height:1px;
-                position:absolute;
-                background:red;
-                top:${gap.top}px;
-                left:${gap.left}px;
-                width:${gap.width}px
-            `;
+            var style = "\n                height:1px;\n                position:absolute;\n                background:red;\n                top:" + gap.top + "px;\n                left:" + gap.left + "px;\n                width:" + gap.width + "px\n            ";
             gapDOM.setAttribute('style', style);
-            this.canvas.appendChild(gapDOM);
+            _this.canvas.appendChild(gapDOM);
         });
-    }
-    align(visualize = false) {
-        let step = function* () {
-            while (this.notOrderedList.length > 0) {
-                // gaps按bottom升序排列
-                for (let i = 0; i < this.gaps.length; i++) {
-                    const gap = this.gaps[i];
-                    const mostMatchedRect = this.findMostMatchedRect(gap);
-                    if (mostMatchedRect) {
-                        this.fillGap(mostMatchedRect, gap);
-                        if (visualize) {
-                            this.drawOrderedRect();
-                            yield this.drawGap();
-                        }
-                        break;
-                    }
+    };
+    Alignment.prototype.align = function () {
+        while (this.notOrderedList.length > 0) {
+            // gaps按bottom升序排列
+            for (var i = 0; i < this.gaps.length; i++) {
+                var gap = this.gaps[i];
+                var mostMatchedRect = this.findMostMatchedRect(gap);
+                if (mostMatchedRect) {
+                    this.fillGap(mostMatchedRect, gap);
+                    break;
                 }
             }
-        };
-        return step.bind(this)();
-    }
-});
+        }
+    };
+    Alignment.prototype.getOrderedList = function () {
+        return this.orderedList.map(function (rectangle) { return rectangle.serialize(); });
+    };
+    return Alignment;
+}());
+exports.default = Alignment;
 
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
 
-/* harmony default export */ __webpack_exports__["a"] = (class {
-    constructor(args) {
+Object.defineProperty(exports, "__esModule", { value: true });
+var utils_1 = __webpack_require__(0);
+var Rectangle = (function () {
+    function Rectangle(args) {
         this.init(args);
     }
-    init({ top = 0, left = 0, width, height }) {
+    Rectangle.prototype.init = function (_a) {
+        var _b = _a.top, top = _b === void 0 ? 0 : _b, _c = _a.left, left = _c === void 0 ? 0 : _c, width = _a.width, height = _a.height, other = _a.other;
         this.top = top;
         this.left = left;
         this.width = width;
         this.height = height;
         this.right = left + width;
         this.bottom = top + height;
-        this.color = `rgb(${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* randomize */])(0, 255)},${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* randomize */])(0, 255)},${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* randomize */])(0, 255)})`;
-    }
-    moveTo({ top, left }) {
-        this.init({ top, left, width: this.width, height: this.height });
-    }
-    getDOMNode() {
-        const dom = document.createElement('div');
-        const pos = `
-            top:${this.top}px;
-            left:${this.left}px;
-            width:${this.width}px;
-            height:${this.height}px;
-        `;
-        const style = `
-            position:absolute;
-            background-color:${this.color};
-            ${pos}
-        `;
+        this.color = "rgb(" + utils_1.randomize(0, 255) + "," + utils_1.randomize(0, 255) + "," + utils_1.randomize(0, 255) + ")";
+        this.other = other;
+    };
+    Rectangle.prototype.moveTo = function (_a) {
+        var top = _a.top, left = _a.left;
+        this.init({ top: top, left: left, width: this.width, height: this.height, other: this.other });
+    };
+    Rectangle.prototype.getDOMNode = function () {
+        var dom = document.createElement('div');
+        var pos = "\n            top:" + this.top + "px;\n            left:" + this.left + "px;\n            width:" + this.width + "px;\n            height:" + this.height + "px;\n            other:" + this.other + "\n        ";
+        var style = "\n            position:absolute;\n            background-color:" + this.color + ";\n            " + pos + "\n        ";
         dom.innerHTML = pos;
         dom.setAttribute('style', style);
         return dom;
-    }
-});
+    };
+    Rectangle.prototype.serialize = function () {
+        return {
+            x: this.left,
+            y: this.top,
+            other: this.other,
+        };
+    };
+    return Rectangle;
+}());
+exports.default = Rectangle;
 
 
 /***/ })
