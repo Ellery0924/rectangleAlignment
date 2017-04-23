@@ -149,7 +149,7 @@ export default class Alignment {
         }
     }
 
-    getOrderedList(): Array<object> {
+    getOrderedList(): Array<{ x: number, y: number, other: any }> {
         return this.orderedList.map(rectangle => rectangle.serialize());
     }
 }

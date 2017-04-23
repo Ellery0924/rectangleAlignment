@@ -29,7 +29,7 @@ export default class Rectangle {
         this.init({ top, left, width: this.width, height: this.height, other: this.other });
     }
 
-    serialize() {
+    serialize(): { x: number, y: number, other: any } {
         return {
             x: this.left,
             y: this.top,
