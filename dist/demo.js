@@ -88,11 +88,11 @@ function randomize(min, max) {
 }
 exports.randomize = randomize;
 function getRandomRects() {
-    return new Array(1).fill(1).map(function (_, i) { return ({
-        width: i === 1 ? 1200 : randomize(300, 400),
+    return new Array(5).fill(1).map(function (_, i) { return ({
+        width: i < 2 ? 1200 : randomize(300, 400),
         height: randomize(300, 400),
         other: i,
-        placeAtBottom: i === 1
+        placeAtBottom: i < 2
     }); });
 }
 exports.getRandomRects = getRandomRects;
@@ -110,8 +110,7 @@ var Alignment = (function () {
     function Alignment(rectList, cw, canvas) {
         this.orderedList = [];
         this.notOrderedList = rectList.filter(function (ropt) { return !ropt.placeAtBottom; }).map(function (ropt) { return new Rectangle_1.default(ropt); });
-        var bottomEleOpt = rectList.find(function (ropt) { return ropt.placeAtBottom; });
-        this.bottomEle = bottomEleOpt ? new Rectangle_1.default(bottomEleOpt) : null;
+        this.bottomEleList = rectList.filter(function (ropt) { return ropt.placeAtBottom; }).map(function (ropt) { return new Rectangle_1.default(ropt); });
         this.cw = cw;
         this.canvas = canvas;
         var gap = {
@@ -223,6 +222,7 @@ var Alignment = (function () {
         return mostMatched;
     };
     Alignment.prototype.align = function () {
+        var _this = this;
         while (this.notOrderedList.length > 0) {
             // gaps按bottom升序排列
             for (var i = 0; i < this.gaps.length; i++) {
@@ -235,9 +235,12 @@ var Alignment = (function () {
             }
         }
         var maxY = this.orderedList.length ? Math.max.apply(undefined, this.orderedList.map(function (item) { return item.bottom; })) : 0;
-        if (this.bottomEle) {
-            this.bottomEle.moveTo({ top: maxY, left: 0 });
-            this.orderedList.push(this.bottomEle);
+        if (this.bottomEleList) {
+            this.bottomEleList.forEach(function (ele) {
+                ele.moveTo({ top: maxY, left: 0 });
+                _this.orderedList.push(ele);
+                maxY += ele.height;
+            });
         }
     };
     Alignment.prototype.getOrderedList = function () {

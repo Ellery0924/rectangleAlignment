@@ -13,13 +13,12 @@ export default class Alignment {
     cw: number;
     canvas: HTMLScriptElement;
     gaps: Array<GapInterface>;
-    bottomEle: Rectangle;
+    bottomEleList: Array<Rectangle>;
 
     constructor(rectList: Array<{ width: number, height: number, placeAtBottom: boolean }>, cw: number, canvas: HTMLScriptElement) {
         this.orderedList = [];
         this.notOrderedList = rectList.filter(ropt => !ropt.placeAtBottom).map(ropt => new Rectangle(ropt));
-        const bottomEleOpt = rectList.find(ropt => ropt.placeAtBottom);
-        this.bottomEle = bottomEleOpt ? new Rectangle(bottomEleOpt) : null;
+        this.bottomEleList = rectList.filter(ropt => ropt.placeAtBottom).map(ropt => new Rectangle(ropt));
         this.cw = cw;
         this.canvas = canvas;
 
@@ -150,10 +149,13 @@ export default class Alignment {
                 }
             }
         }
-        const maxY = this.orderedList.length ? Math.max.apply(undefined, this.orderedList.map(item => item.bottom)) : 0;
-        if (this.bottomEle) {
-            this.bottomEle.moveTo({ top: maxY, left: 0 });
-            this.orderedList.push(this.bottomEle);
+        let maxY = this.orderedList.length ? Math.max.apply(undefined, this.orderedList.map(item => item.bottom)) : 0;
+        if (this.bottomEleList) {
+            this.bottomEleList.forEach((ele) => {
+                ele.moveTo({ top: maxY, left: 0 });
+                this.orderedList.push(ele);
+                maxY += ele.height;
+            });
         }
     }
 
