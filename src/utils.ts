@@ -3,10 +3,10 @@ export function randomize(min: number, max: number): number {
 }
 
 export function getRandomRects() {
-    return new Array(10).fill(1).map((_, i) => ({
-        width: i === 9 ? 1200 : randomize(300, 400),
+    return new Array(1).fill(1).map((_, i) => ({
+        width: i === 1 ? 1200 : randomize(300, 400),
         height: randomize(300, 400),
         other: i,
-        placeAtBottom: i === 9
+        placeAtBottom: i === 1
     }));
 }

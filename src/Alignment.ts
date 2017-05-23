@@ -141,19 +141,17 @@ export default class Alignment {
     align(): void {
         while (this.notOrderedList.length > 0) {
             // gaps按bottom升序排列
-            console.log(this.notOrderedList)
             for (let i = 0; i < this.gaps.length; i++) {
                 const gap: GapInterface = this.gaps[i];
                 const mostMatchedRect: Rectangle = this.findMostMatchedRect(gap);
-                console.log(mostMatchedRect)
                 if (mostMatchedRect) {
                     this.fillGap(mostMatchedRect, gap);
                     break;
                 }
             }
         }
-        const maxY = Math.max.apply(undefined, this.orderedList.map(item => item.bottom));
-        if(this.bottomEle) {
+        const maxY = this.orderedList.length ? Math.max.apply(undefined, this.orderedList.map(item => item.bottom)) : 0;
+        if (this.bottomEle) {
             this.bottomEle.moveTo({ top: maxY, left: 0 });
             this.orderedList.push(this.bottomEle);
         }
