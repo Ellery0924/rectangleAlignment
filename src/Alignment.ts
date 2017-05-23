@@ -13,10 +13,13 @@ export default class Alignment {
     cw: number;
     canvas: HTMLScriptElement;
     gaps: Array<GapInterface>;
+    bottomEle: Rectangle;
 
-    constructor(rectList: Array<{ width: number, height: number }>, cw: number, canvas: HTMLScriptElement) {
+    constructor(rectList: Array<{ width: number, height: number, placeAtBottom: boolean }>, cw: number, canvas: HTMLScriptElement) {
         this.orderedList = [];
-        this.notOrderedList = rectList.map(ropt => new Rectangle(ropt));
+        this.notOrderedList = rectList.filter(ropt => !ropt.placeAtBottom).map(ropt => new Rectangle(ropt));
+        const bottomEleOpt = rectList.find(ropt => ropt.placeAtBottom);
+        this.bottomEle = bottomEleOpt ? new Rectangle(bottomEleOpt) : null;
         this.cw = cw;
         this.canvas = canvas;
 
@@ -138,14 +141,21 @@ export default class Alignment {
     align(): void {
         while (this.notOrderedList.length > 0) {
             // gaps按bottom升序排列
+            console.log(this.notOrderedList)
             for (let i = 0; i < this.gaps.length; i++) {
                 const gap: GapInterface = this.gaps[i];
                 const mostMatchedRect: Rectangle = this.findMostMatchedRect(gap);
+                console.log(mostMatchedRect)
                 if (mostMatchedRect) {
                     this.fillGap(mostMatchedRect, gap);
                     break;
                 }
             }
+        }
+        const maxY = Math.max.apply(undefined, this.orderedList.map(item => item.bottom));
+        if(this.bottomEle) {
+            this.bottomEle.moveTo({ top: maxY, left: 0 });
+            this.orderedList.push(this.bottomEle);
         }
     }
 

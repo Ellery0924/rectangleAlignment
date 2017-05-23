@@ -89,9 +89,10 @@ function randomize(min, max) {
 exports.randomize = randomize;
 function getRandomRects() {
     return new Array(10).fill(1).map(function (_, i) { return ({
-        width: randomize(300, 400),
+        width: i === 9 ? 1200 : randomize(300, 400),
         height: randomize(300, 400),
-        other: i
+        other: i,
+        placeAtBottom: i === 9
     }); });
 }
 exports.getRandomRects = getRandomRects;
@@ -108,7 +109,9 @@ var Rectangle_1 = __webpack_require__(2);
 var Alignment = (function () {
     function Alignment(rectList, cw, canvas) {
         this.orderedList = [];
-        this.notOrderedList = rectList.map(function (ropt) { return new Rectangle_1.default(ropt); });
+        this.notOrderedList = rectList.filter(function (ropt) { return !ropt.placeAtBottom; }).map(function (ropt) { return new Rectangle_1.default(ropt); });
+        var bottomEleOpt = rectList.find(function (ropt) { return ropt.placeAtBottom; });
+        this.bottomEle = bottomEleOpt ? new Rectangle_1.default(bottomEleOpt) : null;
         this.cw = cw;
         this.canvas = canvas;
         var gap = {
@@ -222,14 +225,21 @@ var Alignment = (function () {
     Alignment.prototype.align = function () {
         while (this.notOrderedList.length > 0) {
             // gaps按bottom升序排列
+            console.log(this.notOrderedList);
             for (var i = 0; i < this.gaps.length; i++) {
                 var gap = this.gaps[i];
                 var mostMatchedRect = this.findMostMatchedRect(gap);
+                console.log(mostMatchedRect);
                 if (mostMatchedRect) {
                     this.fillGap(mostMatchedRect, gap);
                     break;
                 }
             }
+        }
+        var maxY = Math.max.apply(undefined, this.orderedList.map(function (item) { return item.bottom; }));
+        if (this.bottomEle) {
+            this.bottomEle.moveTo({ top: maxY, left: 0 });
+            this.orderedList.push(this.bottomEle);
         }
     };
     Alignment.prototype.getOrderedList = function () {
