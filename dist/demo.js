@@ -232,6 +232,9 @@ var Alignment = (function () {
                     this.fillGap(mostMatchedRect, gap);
                     break;
                 }
+                else {
+                    throw new Error('cannot find a proper gap, error hanppened.');
+                }
             }
         }
         var maxY = this.orderedList.length ? Math.max.apply(undefined, this.orderedList.map(function (item) { return item.bottom; })) : 0;
