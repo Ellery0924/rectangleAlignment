@@ -113,6 +113,9 @@ var Alignment = (function () {
         this.bottomEleList = rectList.filter(function (ropt) { return ropt.placeAtBottom; }).map(function (ropt) { return new Rectangle_1.default(ropt); });
         this.cw = cw;
         this.canvas = canvas;
+        if (rectList.some(function (rect) { return rect.width > cw; })) {
+            throw new Error('存在大于容器宽度的矩形，请检查.');
+        }
         var gap = {
             top: 0,
             left: 0,
@@ -231,9 +234,6 @@ var Alignment = (function () {
                 if (mostMatchedRect) {
                     this.fillGap(mostMatchedRect, gap);
                     break;
-                }
-                else {
-                    throw new Error('cannot find a proper gap, error hanppened.');
                 }
             }
         }

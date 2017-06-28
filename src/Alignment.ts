@@ -22,6 +22,10 @@ export default class Alignment {
         this.cw = cw;
         this.canvas = canvas;
 
+        if (rectList.some(rect => rect.width > cw)) {
+            throw new Error('存在大于容器宽度的矩形，请检查.');
+        }
+
         const gap: GapInterface = {
             top: 0,
             left: 0,
