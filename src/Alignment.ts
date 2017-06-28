@@ -146,8 +146,6 @@ export default class Alignment {
                 if (mostMatchedRect) {
                     this.fillGap(mostMatchedRect, gap);
                     break;
-                } else {
-                    throw new Error('cannot find a proper gap, error hanppened.');
                 }
             }
         }
