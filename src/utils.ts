@@ -7,6 +7,7 @@ export function getRandomRects() {
         width: i < 2 ? 1200 : randomize(300, 400),
         height: randomize(300, 400),
         other: i,
-        placeAtBottom: i < 2
+        placeAtBottom: i < 2,
+        placeAtTop: i === 0,
     }));
 }

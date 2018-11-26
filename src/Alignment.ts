@@ -14,11 +14,24 @@ export default class Alignment {
     canvas: HTMLScriptElement;
     gaps: Array<GapInterface>;
     bottomEleList: Array<Rectangle>;
+    topEleList: Array<Rectangle>;
 
-    constructor(rectList: Array<{ width: number, height: number, placeAtBottom: boolean }>, cw: number, canvas: HTMLScriptElement) {
+    constructor(rectList: Array<{
+        width: number,
+        height: number,
+        placeAtBottom: boolean,
+        placeAtTop: boolean,
+    }>, cw: number, canvas: HTMLScriptElement) {
         this.orderedList = [];
-        this.notOrderedList = rectList.filter(ropt => !ropt.placeAtBottom).map(ropt => new Rectangle(ropt));
-        this.bottomEleList = rectList.filter(ropt => ropt.placeAtBottom).map(ropt => new Rectangle(ropt));
+        this.notOrderedList = rectList
+            .filter(ropt => !ropt.placeAtBottom && !ropt.placeAtTop)
+            .map(ropt => new Rectangle(ropt));
+        this.bottomEleList = rectList
+            .filter(ropt => ropt.placeAtBottom)
+            .map(ropt => new Rectangle(ropt));
+        this.topEleList = rectList
+            .filter(ropt => ropt.placeAtTop)
+            .map(ropt => new Rectangle(ropt));
         this.cw = cw;
         this.canvas = canvas;
 
@@ -62,7 +75,7 @@ export default class Alignment {
         const rLeft: number = rect.left;
         // 生成一个新的gap，这个gap的top应该是这个rect移动以后的bottom，这个新gap的top和left很容易确定
         // 接下来计算它的宽度
-        const newGap: GapInterface = { top: rBottom, createBy: rect, left: null, width: null };
+        const newGap: GapInterface = {top: rBottom, createBy: rect, left: null, width: null};
 
         // 从矩形的右下角往右查找，看能否撞到另一个矩形
         // 可以一直延伸到容器右边界
@@ -142,6 +155,17 @@ export default class Alignment {
     }
 
     align(): void {
+        let maxY = 0;
+        // 优先排布位于顶部的元素
+        if (this.topEleList) {
+            this.topEleList.forEach((ele) => {
+                ele.moveTo({top: maxY, left: 0});
+                this.orderedList.push(ele);
+                maxY += ele.height;
+            });
+        }
+        // 让第一个gap的top位于当前的maxY
+        this.gaps[0].top = maxY;
         while (this.notOrderedList.length > 0) {
             // gaps按bottom升序排列
             for (let i = 0; i < this.gaps.length; i++) {
@@ -153,10 +177,11 @@ export default class Alignment {
                 }
             }
         }
-        let maxY = this.orderedList.length ? Math.max.apply(undefined, this.orderedList.map(item => item.bottom)) : 0;
+        maxY = this.orderedList.length ?
+            Math.max.apply(undefined, this.orderedList.map(item => item.bottom)) : maxY;
         if (this.bottomEleList) {
             this.bottomEleList.forEach((ele) => {
-                ele.moveTo({ top: maxY, left: 0 });
+                ele.moveTo({top: maxY, left: 0});
                 this.orderedList.push(ele);
                 maxY += ele.height;
             });

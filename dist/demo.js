@@ -16,9 +16,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -92,7 +92,8 @@ function getRandomRects() {
         width: i < 2 ? 1200 : randomize(300, 400),
         height: randomize(300, 400),
         other: i,
-        placeAtBottom: i < 2
+        placeAtBottom: i < 2,
+        placeAtTop: i === 0,
     }); });
 }
 exports.getRandomRects = getRandomRects;
@@ -106,11 +107,18 @@ exports.getRandomRects = getRandomRects;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Rectangle_1 = __webpack_require__(2);
-var Alignment = (function () {
+var Alignment = /** @class */ (function () {
     function Alignment(rectList, cw, canvas) {
         this.orderedList = [];
-        this.notOrderedList = rectList.filter(function (ropt) { return !ropt.placeAtBottom; }).map(function (ropt) { return new Rectangle_1.default(ropt); });
-        this.bottomEleList = rectList.filter(function (ropt) { return ropt.placeAtBottom; }).map(function (ropt) { return new Rectangle_1.default(ropt); });
+        this.notOrderedList = rectList
+            .filter(function (ropt) { return !ropt.placeAtBottom && !ropt.placeAtTop; })
+            .map(function (ropt) { return new Rectangle_1.default(ropt); });
+        this.bottomEleList = rectList
+            .filter(function (ropt) { return ropt.placeAtBottom; })
+            .map(function (ropt) { return new Rectangle_1.default(ropt); });
+        this.topEleList = rectList
+            .filter(function (ropt) { return ropt.placeAtTop; })
+            .map(function (ropt) { return new Rectangle_1.default(ropt); });
         this.cw = cw;
         this.canvas = canvas;
         if (rectList.some(function (rect) { return rect.width > cw; })) {
@@ -141,7 +149,7 @@ var Alignment = (function () {
         if (gap.width - rect.width === 0) {
             this.gaps = this.gaps.filter(function (g) { return g !== gap; });
         }
-        else {
+        else { // 否则缩减gap的可用宽度，依然保留这个gap
             gap.width = gap.width - rect.width;
             gap.left = gap.left + rect.width;
         }
@@ -226,6 +234,17 @@ var Alignment = (function () {
     };
     Alignment.prototype.align = function () {
         var _this = this;
+        var maxY = 0;
+        // 优先排布位于顶部的元素
+        if (this.topEleList) {
+            this.topEleList.forEach(function (ele) {
+                ele.moveTo({ top: maxY, left: 0 });
+                _this.orderedList.push(ele);
+                maxY += ele.height;
+            });
+        }
+        // 让第一个gap的top位于当前的maxY
+        this.gaps[0].top = maxY;
         while (this.notOrderedList.length > 0) {
             // gaps按bottom升序排列
             for (var i = 0; i < this.gaps.length; i++) {
@@ -237,7 +256,8 @@ var Alignment = (function () {
                 }
             }
         }
-        var maxY = this.orderedList.length ? Math.max.apply(undefined, this.orderedList.map(function (item) { return item.bottom; })) : 0;
+        maxY = this.orderedList.length ?
+            Math.max.apply(undefined, this.orderedList.map(function (item) { return item.bottom; })) : maxY;
         if (this.bottomEleList) {
             this.bottomEleList.forEach(function (ele) {
                 ele.moveTo({ top: maxY, left: 0 });
@@ -262,7 +282,7 @@ exports.default = Alignment;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = __webpack_require__(0);
-var Rectangle = (function () {
+var Rectangle = /** @class */ (function () {
     function Rectangle(args) {
         this.init(args);
     }
